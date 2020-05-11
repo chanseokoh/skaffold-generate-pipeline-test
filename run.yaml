@@ -1,0 +1,24 @@
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  name: sample
+spec:
+  resources:
+    inputs:
+    - name: source
+      resourceSpec:
+        type: git
+        params:
+        - name: url
+          value: https://github.com/chanseokoh/skaffold-generate-pipeline-test.git
+  taskSpec:
+    resources:
+      inputs:
+      - name: source
+        type: git
+    steps:
+    - name: run-build
+      image: gcr.io/k8s-skaffold/skaffold:v1.9.1
+      command: ["skaffold", "build"]
+      args: ["--profile", "oncluster"]
+      workingDir: /workspace/source
