@@ -1,0 +1,19 @@
+apiVersion: skaffold/v2beta2
+kind: Config
+metadata:
+  name: ci-test-
+build:
+  artifacts:
+  - image: gcr.io/k8s-skaffold/skaffold
+profiles:
+- name: oncluster
+  build:
+    artifacts:
+    - image: gcr.io/chanseok-playground-new/skaffold-pipeline-test
+      context: .
+      kaniko: {}
+    tagPolicy:
+      gitCommit: {}
+    cluster:
+      pullSecretName: cool-secret
+      namespace: default
